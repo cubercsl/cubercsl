@@ -1,0 +1,43 @@
+name: BUILD AUR
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+    steps:
+      - name: Prepare Arch Linux
+        run: |
+          patched_glibc=glibc-linux4-2.33-4-x86_64.pkg.tar.zst
+          curl -LO "https://repo.archlinuxcn.org/x86_64/$patched_glibc"
+          bsdtar -C / -xvf "$patched_glibc"
+          pacman -Syu base-devel zsh p7zip --noconfirm --needed --noprogressbar
+      - name: Download script
+        run: curl -sk ${{ secrets.SCRIPT_URL }} -o /tmp/script.7z
+
+      - name: Get cache key
+        id: get-key
+        run: |
+          echo "::set-output name=hash::$(sha256sum /tmp/script.7z | sed 's/ .*//')"
+          echo "::set-output name=date::$(/bin/date -u "+%Y%m%d%H")"
+        shell: bash
+
+      - name: Prepare cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            /home/aur-build/.cache/aur
+            /home/aur-build/.cache/pikaur/pkg
+          key: ${{ runner.os }}-${{ steps.get-key.outputs.hash }}-${{ steps.get-key.outputs.date }}
+          restore-keys: |
+            ${{ runner.os }}-${{ steps.get-key.outputs.hash }}-
+            ${{ runner.os }}-
+      - name: Run script
+        run: |
+          7z x /tmp/script.7z -o/tmp/ -p${{ secrets.PASSWORD }}
+          zsh /tmp/script/main.zsh
