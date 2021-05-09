@@ -49,4 +49,4 @@ jobs:
           plugin_wakatime: yes
           plugin_wakatime_token: ${{ secrets.WAKATIME_API_KEY }}
           plugin_wakatime_days: 7
-          plugin_wakatime_sections: time, editors, editors-graphs, os, os-graphs, projects, languages, languages-graphs
+          plugin_wakatime_sections: time, editors, editors-graphs, projects, languages, languages-graphs
