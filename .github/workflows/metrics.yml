@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 jobs:
   github-metrics:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: lowlighter/metrics@latest
         with:
