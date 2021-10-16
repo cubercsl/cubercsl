@@ -26,11 +26,6 @@ jobs:
           base: header, activity, community, repositories, metadata
           config_timezone: Asia/Shanghai
           plugins_errors_fatal: yes
-          plugin_activity: yes
-          plugin_activity_days: 14
-          plugin_activity_filter: comment, release, issue, pr, review, wiki, member, public
-          plugin_activity_limit: 5
-          plugin_activity_visibility: public
           plugin_followup: yes
           plugin_habits: yes
           plugin_introduction: yes
