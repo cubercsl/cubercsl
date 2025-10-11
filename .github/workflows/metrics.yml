@@ -28,7 +28,7 @@ jobs:
           plugins_errors_fatal: yes
           plugin_followup: yes
           plugin_followup_sections: user, repositories
-          plugin_habits: yes
+          plugin_habits: no
           plugin_introduction: yes
           plugin_introduction_title: yes
           plugin_isocalendar: yes
